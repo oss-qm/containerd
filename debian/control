@@ -1,0 +1,33 @@
+Source: containerd
+Section: admin
+Priority: optional
+Maintainer: Enrico Weigelt <info@metux.net>
+Build-Depends: debhelper (>=11~),
+               golang-any (>=1.20),
+               libbtrfs-dev,
+               go-md2man
+Standards-Version: 4.5.1
+Rules-Requires-Root: no
+Homepage: https://containerd.io/
+XS-Go-Import-Path: github.com/containerd/containerd
+Testsuite: autopkgtest-pkg-go
+
+Package: containerd
+Architecture: linux-any
+Multi-Arch: foreign
+Breaks: docker.io (<< 1.12)
+Depends: runc (>= 0.1.0~),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Suggests: containernetworking-plugins,
+Description: open and reliable container runtime
+ Containerd is an industry-standard container runtime with an emphasis on
+ simplicity, robustness and portability. It is available as a daemon for
+ Linux and Windows, which can manage the complete container life cycle of
+ its host system: image transfer and storage, container execution and
+ supervision, low-level storage and network attachments, etc.
+ .
+ Containerd is designed to be embedded into a larger system, rather than
+ being used directly by developers or end-users.
+ .
+ This package contains the binaries.
