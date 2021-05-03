@@ -1,0 +1,13 @@
+Source: containerd
+Section: unknown
+Priority: optional
+Maintainer: Enrico Weigelt <info@metux.net>
+Build-Depends: debhelper (>=11~), golang-1.14-go, libbtrfs-dev, go-md2man
+Standards-Version: 4.1.4
+
+Package: containerd
+Architecture: any
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends}, runc
+Description: container management engine used eg by docker or kubernetes
+ This is the containerd container management engine that grew out of docker
