@@ -2,7 +2,7 @@ Source: containerd
 Section: unknown
 Priority: optional
 Maintainer: Enrico Weigelt <info@metux.net>
-Build-Depends: debhelper (>=11~), golang-1.14-go, libbtrfs-dev, go-md2man
+Build-Depends: debhelper (>=11~), golang-1.19-go, libbtrfs-dev, go-md2man
 Standards-Version: 4.1.4
 
 Package: containerd
