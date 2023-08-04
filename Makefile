@@ -25,7 +25,6 @@ ROOTDIR=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 # The convention of `DESTDIR` was changed in containerd v1.6.
 PREFIX        ?= /usr/local
 BINDIR        ?= $(PREFIX)/bin
-SBINDIR       ?= $(PREFIX)/sbin
 DATADIR       ?= $(PREFIX)/share
 DOCDIR        ?= $(DATADIR)/doc
 MANDIR        ?= $(DATADIR)/man
@@ -98,8 +97,7 @@ CRICNIRELEASE=cri-containerd-cni-$(VERSION:v%=%)-${GOOS}-${GOARCH}
 PKG=github.com/containerd/containerd
 
 # Project binaries.
-COMMANDS=ctr containerd-stress
-DAEMONS=containerd
+COMMANDS=ctr containerd containerd-stress
 MANPAGES=ctr.8 containerd.8 containerd-config.8 containerd-config.toml.5
 
 ifdef BUILDTAGS
@@ -162,9 +160,7 @@ GO_GCFLAGS=$(shell				\
 	echo "-gcflags=-trimpath=$${1}/src";	\
 	)
 
-BINARIES_CMD=$(addprefix bin/,$(COMMANDS))
-BINARIES_SYS=$(addprefix bin/,$(DAEMONS))
-BINARIES=$(BINARIES_CMD) $(BINARIES_SYS)
+BINARIES=$(addprefix bin/,$(COMMANDS))
 
 #include platform specific makefile
 -include Makefile.$(GOOS)
@@ -442,14 +438,12 @@ clean-test: ## clean up debris from previously failed tests
 
 install: ## install binaries
 	@echo "$(WHALE) $@ $(BINARIES)"
-	@$(INSTALL) -d $(DESTDIR)$(BINDIR) $(DESTDIR)/$(SBINDIR)
-	@$(INSTALL) $(BINARIES_CMD) $(DESTDIR)/$(BINDIR)
-	@$(INSTALL) $(BINARIES_SYS) $(DESTDIR)/$(SBINDIR)
+	@$(INSTALL) -d $(DESTDIR)$(BINDIR)
+	@$(INSTALL) $(BINARIES) $(DESTDIR)$(BINDIR)
 
 uninstall:
 	@echo "$(WHALE) $@"
-	@rm -f $(addprefix $(DESTDIR)/$(BINDIR)/,$(notdir $(BINARIES_CMD)))
-	@rm -f $(addprefix $(DESTDIR)/$(BINDIR)/,$(notdir $(BINARIES_SYS)))
+	@rm -f $(addprefix $(DESTDIR)$(BINDIR)/,$(notdir $(BINARIES)))
 
 ifeq ($(GOOS),windows)
 install-deps:
