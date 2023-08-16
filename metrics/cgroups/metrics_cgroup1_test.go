@@ -1,4 +1,5 @@
 //go:build linux && !no_cgroup1
+
 /*
    Copyright The containerd Authors.
 
@@ -15,17 +16,21 @@
    limitations under the License.
 */
 
-package sbserver
+package cgroups
 
 import (
-	cg1 "github.com/containerd/cgroups/v3/cgroup1/stats"
-	"github.com/containerd/containerd/api/types"
-	"github.com/containerd/typeurl/v2"
+	"context"
+
+	v1types "github.com/containerd/containerd/metrics/types/v1"
+	v2types "github.com/containerd/containerd/metrics/types/v2"
+	"github.com/containerd/containerd/protobuf"
+
+	"github.com/containerd/containerd/protobuf/types"
 )
 
-func allocMetricCgroup1(stats *types.Metric) interface{} {
-	if typeurl.Is(stats.Data, (*cg1.Metrics)(nil)) {
-		return &cg1.Metrics{}
+func (t *mockStatT) Stats(context.Context) (*types.Any, error) {
+	if t.isV1 {
+		return protobuf.MarshalAnyToProto(&v1types.Metrics{})
 	}
-	return nil
+	return protobuf.MarshalAnyToProto(&v2types.Metrics{})
 }

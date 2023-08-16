@@ -1,4 +1,4 @@
-//go:build linux && !no_cgroup1
+//go:build linux && no_cgroup1
 /*
    Copyright The containerd Authors.
 
@@ -15,17 +15,8 @@
    limitations under the License.
 */
 
-package sbserver
+package opts
 
-import (
-	cg1 "github.com/containerd/cgroups/v3/cgroup1/stats"
-	"github.com/containerd/containerd/api/types"
-	"github.com/containerd/typeurl/v2"
-)
-
-func allocMetricCgroup1(stats *types.Metric) interface{} {
-	if typeurl.Is(stats.Data, (*cg1.Metrics)(nil)) {
-		return &cg1.Metrics{}
-	}
-	return nil
+func cgroupv1HasHugetlb() (bool) {
+	return false
 }

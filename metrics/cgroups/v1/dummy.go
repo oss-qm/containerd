@@ -1,4 +1,5 @@
-//go:build linux && !no_cgroup1
+//go:build linux && no_cgroup1
+
 /*
    Copyright The containerd Authors.
 
@@ -15,17 +16,17 @@
    limitations under the License.
 */
 
-package sbserver
+package v1
 
 import (
-	cg1 "github.com/containerd/cgroups/v3/cgroup1/stats"
-	"github.com/containerd/containerd/api/types"
-	"github.com/containerd/typeurl/v2"
+	"context"
+	"errors"
+
+	"github.com/containerd/containerd/events"
+	"github.com/containerd/containerd/runtime"
+	"github.com/docker/go-metrics"
 )
 
-func allocMetricCgroup1(stats *types.Metric) interface{} {
-	if typeurl.Is(stats.Data, (*cg1.Metrics)(nil)) {
-		return &cg1.Metrics{}
-	}
-	return nil
+func NewTaskMonitor(ctx context.Context, publisher events.Publisher, ns *metrics.Namespace) (runtime.TaskMonitor, error) {
+	return nil, errors.New("no cgroup1 support")
 }

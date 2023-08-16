@@ -1,3 +1,4 @@
+//go:build linux && !no_cgroup1
 /*
    Copyright The containerd Authors.
 
